@@ -213,10 +213,18 @@ class Test_report:
         self.plots_file = 'plots_file'
         self.report_file = 'report_file'
 
-    def set_report_files(self):
-        self.excel_file = f'{self.folder_path}INFLE_{self.repor_id['infle']}{self.repor_id['subinfle']}_{self.standard_test}_{self.client_id}_{len(self.samples_id)}.xlsm'
-        self.plots_file = f'{self.folder_path}plots.pdf'
-        self.report_file = f'{self.folder_path}INFLE_{self.repor_id['infle']}{self.repor_id['subinfle']}_{self.standard_test}_{self.client_id}_{len(self.samples_id)}.pdf'
+    def set_report_files(self, extension='xlsm'):
+        """Configura los nombres de los archivos de informe."""
+        if len(self.samples_id) == 0:
+            self.excel_file = f'{self.folder_path}INFLE_{self.repor_id['infle']}{self.repor_id['subinfle']}_{self.standard_test}_{self.client_id}.{extension}'
+            self.plots_file = f'{self.folder_path}plots.pdf'
+            self.report_file = f'{self.folder_path}INFLE_{self.repor_id['infle']}{self.repor_id['subinfle']}_{self.standard_test}_{self.client_id}.pdf'
+        elif len(self.samples_id) > 0:
+            self.excel_file = f'{self.folder_path}INFLE_{self.repor_id['infle']}{self.repor_id['subinfle']}_{self.standard_test}_{self.client_id}_{len(self.samples_id)}.{extension}'
+            self.plots_file = f'{self.folder_path}plots.pdf'
+            self.report_file = f'{self.folder_path}INFLE_{self.repor_id['infle']}{self.repor_id['subinfle']}_{self.standard_test}_{self.client_id}_{len(self.samples_id)}.pdf'
+        else:
+            raise ValueError("Error: No se han definido los identificadores de la prueba o de las muestras.")
         return self.excel_file, self.report_file
     
     def add_tests(self):
@@ -413,7 +421,7 @@ class Panel_toughness_test_report(Test_report):
         normalize_pdf_orientation(input_pdf_path=self.report_file, output_pdf_path=self.report_file, desired_orientation='portrait')
         apply_header_footer_pdf(input_pdf_path=self.report_file, header_footer_pdf_path=header_footer_pdf_path, output_pdf_path=self.report_file)
 
-class Beam_residual_strength_test_report(Test_report):
+class Panel_Beam_residual_strength_test_report(Test_report):
     """
     Clase para generar informes de pruebas de tenacidad en paneles.
 
@@ -439,9 +447,8 @@ class Beam_residual_strength_test_report(Test_report):
     def set_defl_points(self):
         """Configura los puntos de deflexión según la norma."""
         standards_map = {
-            'ASTMC1550': [5., 10., 20., 30., 40., 45.],
-            'EFNARC1996': [5., 10., 15., 20., 25., 30.],
-            'EN14651': [0.5, 1.5, 2.5, 3.5, 4.]
+            'EN14651': [0.5, 1.5, 2.5, 3.5, 4.],
+            'EN14488': [0.5, 1.5, 2.5, 3.5, 4., 5.]
         }
         self.defl_points = np.array(standards_map[self.standard_test])
         if self.defl_points.size == 0:
@@ -571,3 +578,34 @@ class Axial_compression_test_report(Test_report):
         normalize_pdf_orientation(input_pdf_path=self.report_file, output_pdf_path=self.report_file, desired_orientation='portrait')
         apply_header_footer_pdf(input_pdf_path=self.report_file, header_footer_pdf_path=header_footer_pdf_path, output_pdf_path=self.report_file)
 
+class Generate_test_report(Test_report):
+    """
+    Clase para generar informes de pruebas de tenacidad en paneles.
+
+    Atributos:
+        infle (str): Identificador de la prueba.
+        subinfle (str): Subidentificador de la prueba.
+        folder (str): Carpeta base donde se generan los archivos.
+        standard (str): Norma aplicada en la prueba.
+        client_id (str): Nombre de la empresa que realiza la prueba.
+        samples_id (list): Identificadores de las muestras.
+    """
+    def __init__(self, infle=None, subinfle=None, folder=None, standard=None, client_id=None, samples_id=[]):
+        super().__init__()
+        self.repor_id = {'infle': infle, 'subinfle': subinfle}
+        self.standard_test = standard
+        self.folder_path = folder
+        self.client_id = client_id
+        self.samples_id = samples_id
+        self.tests = []
+        self.defl_points = np.array([])
+        super().set_report_files(extension='xlsx')
+    
+    def make_report_file(self):
+        """Genera el archivo de informe final."""
+        header_footer_pdf_path = f'./formatos/formato_no_acreditado.pdf'
+
+        convert_excel_to_pdf(excel_path=self.excel_file, pdf_path=self.report_file, pag_i=0, pag_f=0)
+        #merge_pdfs(pdf_list=[self.report_file], output_pdf=self.report_file)
+        normalize_pdf_orientation(input_pdf_path=self.report_file, output_pdf_path=self.report_file, desired_orientation='portrait')
+        apply_header_footer_pdf(input_pdf_path=self.report_file, header_footer_pdf_path=header_footer_pdf_path, output_pdf_path=self.report_file)
