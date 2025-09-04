@@ -2,14 +2,15 @@ import os
 from test_ledi import Axial_compression_test_report
 
 # Parámetros iniciales
-infle = '231-25'
-subinfle = '' #Agregar "-A", o "-B"
+infle = '159-25'
+panel = 'P1'  #Cambiar a P2, P3, ... de acuerdo con cada panel
+subinfle = '-A' 
 standar = 'CORES'
-empresa = 'IMAGINA'
-cores_id = [id+1 for id in range (3)]    #Cambiar 1 por 4, cuando se quiere hacer salto de panel
+empresa = 'MARSA'
+cores_id = [id+1 for id in range(8)]    #Cambair 1 por 4, cuando se quiere hacer salto de panel
 
 # Directorios
-base_dir = f'E:/0_LEDI-PUCP/6_DIAMANTINAS/{infle}/'
+base_dir = f'E:/0_LEDI-PUCP/6_DIAMANTINAS/{infle}/{panel}/'
 os.makedirs(base_dir, exist_ok=True)
 
 # Crear el informe en excel

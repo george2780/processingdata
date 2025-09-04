@@ -2,14 +2,14 @@ import os
 from test_ledi import Panel_toughness_test_report
 
 # Parámetros iniciales
-infle = '090-25'
-subinfle = ''
+infle = '117-25'
+subinfle = '-A'
 standar = 'EFNARC1996'
-empresa = 'BARCHIP'
-panels_id = [id+1 for id in range(2)]
+empresa = 'PRODIMIN'
+panels_id = [id+1 for id in range(3)]    #Cambair 1 por 4, cuando se quiere hacer salto de panel
 
 # Directorios
-base_dir = f'C:/Users/joela/Documents/MATLAB/Losas/{infle}/'
+base_dir = f'E:/0_LEDI-PUCP/7_PANELES/{infle}/'   
 os.makedirs(base_dir, exist_ok=True)
 
 # Crear el informe en excel

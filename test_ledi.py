@@ -79,8 +79,8 @@ class Mechanical_test:
         ax.legend(fontsize=9)
         ax.grid(visible=True, which='both', linestyle='--')
         ax.minorticks_on()
-        #ax.set_position([0.10, 0.15, 0.65, 0.75])
-        ax.set_position([0.10, 0.15, 0.75, 0.75])
+        ax.set_position([0.10, 0.15, 0.65, 0.75])           #MARGENES DE IMPRESIÓN PARA DIAMANTINAS
+        #ax.set_position([0.10, 0.15, 0.75, 0.75])           #MARGENES DE IMPRESIÓN PARA PANELES
         # Texto adicional en el gráfico
         fig.text(0.05, 0.05, f'INF-LE {report_id}', fontsize=8, horizontalalignment='left')
         fig.text(0.5, 0.05, f'LEDI-{test_name}', fontsize=8, horizontalalignment='center')
@@ -528,8 +528,10 @@ class Axial_compression_test_report(Test_report):
 
     def add_tests(self):
         for id in self.samples_id:
-            test = Axial_compression_test(sample_id=id, data_file=f'{self.folder_path}{self.repor_id['infle']}-d{id}/specimen.dat')
-            test.get_data(data_file=test.data_file, data_source='csv', variable_names=['Time', 'Displacement', 'Load'])
+            test = Axial_compression_test(sample_id=id, data_file=f'{self.folder_path}{self.repor_id['infle']}-d{id}/specimen.dat')    #para data archivo tipo "csv"
+            test.get_data(data_file=test.data_file, data_source='csv', variable_names=['Time', 'Displacement', 'Load'])                #para data archivo tipo "csv"
+            #test = Axial_compression_test(sample_id=id, data_file=f'{self.folder_path}{self.repor_id['infle']}-d{id}/D{id}.xlsx')   #para data archivo tipo "excel"
+            #test.get_data(data_file=test.data_file, data_source='xlsx', variable_names=['Time', 'Displacement', 'Load'])            #para data archivo tipo "excel"
             test.preprocess_data()
             self.tests.append(test)
     
@@ -555,7 +557,7 @@ class Axial_compression_test_report(Test_report):
         ylabel='Fuerza (kN)'
         sample_name='CORE'
         test_name='ENSAYO DE RESISTENCIA A LA COMPRESIÓN'
-        num_1plot_pag=4
+        num_1plot_pag=4         #para cambiar la página de inicio de las gráficas
         comparative=False
 
         self.add_tests()
