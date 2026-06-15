@@ -785,7 +785,7 @@ class Panel_toughness_test_report(Test_report):
     num_1plot_pag = 4
     start_row = 18
     data_file_pattern = 'Losa P{id}.xlsx'
-    data_columns = ('Time', 'Load', 'Deflection', 'Displacement')
+    data_columns = ('Time', 'Deflection', 'Displacement', 'Load')
     _required_columns = frozenset({'Load', 'Deflection'})
 
     def add_tests(self):
