@@ -62,7 +62,7 @@ REPORT_CONFIGS = {
         'default_standard': 'CORES',
         'standard_choices': None,
         'default_client': 'PRODIMIN',
-        'default_base': 'D:/',
+        'default_base': 'G:/0_LEDI-PUCP/6_DIAMANTINAS',
         'default_n': 6,
         'requires_samples': True,
     },
